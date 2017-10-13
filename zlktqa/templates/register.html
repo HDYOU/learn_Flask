@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}注册{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/login_register.css') }}">
+{% endblock %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+                <li>
+                    <a href="/">首页</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('question') }}">发布问答</a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="get">
+                <div class="form-group">
+                    <input name="q" type="text" class="form-control" placeholder="请输入关键字">
+                </div>
+                <button type="submit" class="btn btn-default">查找</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user %}
+                    <li><a href="#">{{ user.username }}</a></li>
+                    <li><a href="{{ url_for('logout') }}">注销</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">登录</a></li>
+                    <li class="active"><a href="{{ url_for('register') }}">注册</a></li>
+                {% endif %}
+            </ul>
+{% endblock %}
+
+{% block main %}
+    <form action="" method="post">
+        <div class="form-containor">
+            <h3 class="page-title">注册</h3>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="手机号码" name="telephone">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="用户名" name="username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="密码" name="password1">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="确认密码" name="password2">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block">立即注册</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

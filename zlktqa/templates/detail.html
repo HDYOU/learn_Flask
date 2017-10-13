@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}详情{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+{% endblock %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+                <li>
+                    <a href="/">首页</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('question') }}">发布问答</a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="get">
+                <div class="form-group">
+                    <input name="q" type="text" class="form-control" placeholder="请输入关键字">
+                </div>
+                <button type="submit" class="btn btn-default">查找</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user %}
+                    <li><a href="#">{{ user.username }}</a></li>
+                    <li><a href="{{ url_for('logout') }}">注销</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">登录</a></li>
+                    <li><a href="{{ url_for('register') }}">注册</a></li>
+                {% endif %}
+            </ul>
+{% endblock %}
+
+{% block main %}
+    <h3 class="page-title">{{ question.title }}</h3>
+    <p class="question-info">
+        <span class="author">作者：{{ question.author.username }}</span>
+        <span>时间：{{ question.create_time }}</span>
+    </p>
+    <hr>
+    <p class="question-content">{{ question.content }}</p>
+    <hr>
+    <h4>评论：({{ question.answers|length }})</h4>
+    <form action="{{ url_for('add_answer') }}" method="post">
+    <div class="comment-container">
+        <div class="form-group">
+            <input name='answer_content' type="text" class="form-control" placeholder="请填写评论">
+            <input type="hidden" name="question_id" value="{{ question.id }}">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary">评论</button>
+        </div>
+    </div>
+    </form>
+    <ul class="answer-list">
+        {% for answer in question.answers %}
+            <li>
+                <div class="user-info">
+                    <img src="{{ url_for('static',filename='images/avatar.jpg') }}" alt="" class="avatar">
+                    <span class="username">{{ answer.author.username }}</span>
+                    <span class="create-time">{{ answer.create_time }}</span>
+                </div>
+                <p class="answer-content">{{ answer.content }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
